@@ -8,6 +8,7 @@ using Microsoft.Owin.Security.DataProtection;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using TravelDemo.Models;
+using System.Configuration;
 
 namespace TravelDemo
 {
@@ -46,24 +47,24 @@ namespace TravelDemo
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
-            // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+      // Uncomment the following lines to enable logging in with third party login providers
+      app.UseMicrosoftAccountAuthentication(
+          clientId: ConfigurationManager.AppSettings["MicrosoftAccountClientID"],
+          clientSecret: ConfigurationManager.AppSettings["MicrosoftClientSecret"]);
 
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
+      //app.UseTwitterAuthentication(
+      //   consumerKey: "",
+      //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+      //app.UseFacebookAuthentication(
+      //   appId: "",
+      //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
-        }
+      //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+      //{
+      //    ClientId = "",
+      //    ClientSecret = ""
+      //});
+    }
     }
 }
