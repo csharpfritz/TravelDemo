@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
+using System.Web.ModelBinding;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -45,17 +46,10 @@ namespace TravelDemo.Trips
           if (string.IsNullOrEmpty(Request.QueryString["id"]))
             Response.Redirect("~/Trips");
 
-          BindTrip(Request.QueryString["id"]);
         }
 
       }
 
-    }
-
-    private void BindTrip(string id)
-    {
-      myForm.DataSource = new[] { GetTripFor(id) };
-      myForm.DataBind();
     }
 
     private Models.Trip GetTripFor(string id)
@@ -95,38 +89,59 @@ namespace TravelDemo.Trips
 
       _Context.SaveChanges();
       myForm.ChangeMode(FormViewMode.ReadOnly);
-      BindTrip(myForm.DataKey.Value.ToString());
+      //BindTrip(myForm.DataKey.Value.ToString());
 
     }
-
-    //protected void myForm_ItemCommand(object sender, FormViewCommandEventArgs e)
-    //{
-    //  switch (e.CommandName.ToLowerInvariant())
-    //  {
-    //    case "insert":
-    //      myForm.ChangeMode(FormViewMode.Insert);
-    //      break;
-    //    case "edit":
-    //      myForm.ChangeMode(FormViewMode.Edit);
-    //      BindTrip(myForm.DataKey.Value.ToString());
-    //      break;
-    //    case "save":
-    //      myForm.ChangeMode(FormViewMode.Edit);
-    //      break;
-    //    default:
-    //      myForm.ChangeMode(FormViewMode.ReadOnly);
-    //      BindTrip(myForm.DataKey.Value.ToString());
-    //      break;
-    //  }
-
-   // }
 
     protected void myForm_ModeChanging(object sender, FormViewModeEventArgs e)
     {
       if (e.NewMode == FormViewMode.Edit)
       {
         myForm.ChangeMode(FormViewMode.Edit);
-        BindTrip(myForm.DataKey.Value.ToString());
+        //BindTrip(myForm.DataKey.Value.ToString());
+      }
+    }
+
+    // The id parameter should match the DataKeyNames value set on the control
+    // or be decorated with a value provider attribute, e.g. [QueryString]int id
+    public TravelDemo.Models.Trip myForm_GetItem([QueryString]string id)
+    {
+      return GetTripFor(id);
+    }
+
+    public void myForm_InsertItem()
+    {
+      var item = new TravelDemo.Models.Trip() {
+        Id=Guid.NewGuid()
+      };
+      TryUpdateModel(item);
+      if (ModelState.IsValid)
+      {
+        // Save changes here
+        _Context.Trips.Add(item);
+        _Context.SaveChanges();
+        Response.Redirect("~/Trips/Details?id=" + item.Id);
+      }
+    }
+
+    // The id parameter name should match the DataKeyNames value set on the control
+    public void myForm_UpdateItem(string id)
+    {
+
+      var item = GetTripFor(id);
+      // Load the item here, e.g. item = MyDataLayer.Find(id);
+      if (item == null)
+      {
+        // The item wasn't found
+        ModelState.AddModelError("", String.Format("Trip with id {0} was not found", id));
+        return;
+      }
+      TryUpdateModel(item);
+      if (ModelState.IsValid)
+      {
+        // Save changes here, e.g. MyDataLayer.SaveChanges();
+        _Context.SaveChanges();
+
       }
     }
   }

@@ -4,9 +4,9 @@
 
   <asp:FormView runat="server" ID="myForm" 
     ItemType="TravelDemo.Models.Trip" DataKeyNames="Id"
-   OnModeChanging="myForm_ModeChanging"
-    OnItemInserting="myForm_ItemInserting"
-    OnItemUpdating="myForm_ItemUpdating">
+    SelectMethod="myForm_GetItem"
+    InsertMethod="myForm_InsertItem"
+    UpdateMethod="myForm_UpdateItem">
     <ItemTemplate>
       <fieldset>
         <legend><%#: Item.DestinationName %> (<%#: Item.Id %>)</legend>
@@ -39,13 +39,13 @@
         <dl>
 
           <dt>Destination:</dt>
-          <dd><asp:TextBox runat="server" ID="insert_destinationname" Text="<%#: BindItem.DestinationName %>"></asp:TextBox></dd>
+          <dd><asp:TextBox runat="server" ID="DestinationName" Text="<%#: BindItem.DestinationName %>"></asp:TextBox></dd>
 
           <dt>Departure Date:</dt>
-          <dd><asp:TextBox runat="server" ID="insert_departuredatetimeutc" TextMode="Date" Text="<%#: BindItem.DepartureDateTimeUtc %>"></asp:TextBox></dd>
+          <dd><asp:TextBox runat="server" ID="DepartureDateTimeUtc" TextMode="Date" Text="<%#: BindItem.DepartureDateTimeUtc %>"></asp:TextBox></dd>
 
           <dt>Return Date:</dt>
-          <dd><asp:TextBox runat="server" ID="insert_returndatetimeutc" TextMode="Date" Text="<%#: BindItem.ReturnDateTimeUtc %>"></asp:TextBox></dd>
+          <dd><asp:TextBox runat="server" ID="ReturnDateTimeUtc" TextMode="Date" Text="<%#: BindItem.ReturnDateTimeUtc %>"></asp:TextBox></dd>
 
         </dl>
 
@@ -65,13 +65,13 @@
         <dl>
 
           <dt>Destination:</dt>
-          <dd><asp:TextBox runat="server" ID="update_destinationname" Text="<%#: BindItem.DestinationName %>"></asp:TextBox></dd>
+          <dd><asp:TextBox runat="server" ID="DestinationName" Text="<%#: BindItem.DestinationName %>"></asp:TextBox></dd>
 
           <dt>Departure Date:</dt>
-          <dd><asp:TextBox runat="server" ID="update_departuredatetimeutc" TextMode="Date" Text='<%#: Item.DepartureDateTimeUtc.ToString("yyyy-MM-dd") %>'></asp:TextBox></dd>
+          <dd><asp:TextBox runat="server" ID="DepartureDateTimeUtc" TextMode="Date" Text='<%#: Bind("DepartureDateTimeUtc", "{0:yyyy-MM-dd}") %>'></asp:TextBox></dd>
 
           <dt>Return Date:</dt>
-          <dd><asp:TextBox runat="server" ID="update_returndatetimeutc" TextMode="Date" Text='<%#: Item.ReturnDateTimeUtc.ToString("yyyy-MM-dd") %>'></asp:TextBox></dd>
+          <dd><asp:TextBox runat="server" ID="ReturnDateTimeUtc" TextMode="Date" Text='<%#: Bind("ReturnDateTimeUtc", "{0:yyyy-MM-dd}") %>'></asp:TextBox></dd>
 
         </dl>
 

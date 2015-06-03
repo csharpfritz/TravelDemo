@@ -9,11 +9,11 @@
 
   <br />
 
-  <asp:GridView runat="server" ID="myGrid" AutoGenerateColumns="false">
+  <asp:GridView runat="server" ID="myGrid" AutoGenerateColumns="false" SelectMethod="myGrid_GetData" AllowSorting="true">
     <Columns>
-      <asp:HyperLinkField HeaderText="Destination" DataTextField="DestinationName" DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Trips/Details?id={0}" />
-      <asp:BoundField DataField="DepartureDateTimeUtc" HeaderText="Departure" />
-      <asp:BoundField DataField="ReturnDateTimeUtc" HeaderText="Return" />
+      <asp:HyperLinkField HeaderText="Destination" DataTextField="DestinationName" SortExpression="DestinationName" DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Trips/Details?id={0}" />
+      <asp:BoundField DataField="DepartureDateTimeUtc" HeaderText="Departure" SortExpression="DepartureDateTimeUtc" />
+      <asp:BoundField DataField="ReturnDateTimeUtc" HeaderText="Return" SortExpression="ReturnDateTimeUtc" />
     </Columns>
   </asp:GridView>
 

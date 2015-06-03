@@ -11,19 +11,20 @@ namespace TravelDemo.Trips
   {
     protected void Page_Load(object sender, EventArgs e)
     {
-
-      if (!Page.IsPostBack)
-      {
-        BindGrid();
-      }
-
     }
 
-    private void BindGrid()
+    // The return type can be changed to IEnumerable, however to support
+    // paging and sorting, the following parameters must be added:
+    //     int maximumRows
+    //     int startRowIndex
+    //     out int totalRowCount
+    //     string sortByExpression
+    public IQueryable<Models.Trip> myGrid_GetData()
     {
+
       var ctx = new Models.TripContext();
-      myGrid.DataSource = ctx.Trips.AsEnumerable().OrderBy(t => t.DepartureDateTimeUtc);
-      myGrid.DataBind();
+      return ctx.Trips.OrderBy(t => t.DepartureDateTimeUtc);
+
     }
   }
 }
