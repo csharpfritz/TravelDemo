@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Title="My Trips" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="TravelDemo.Trips.Default" MasterPageFile="~/Site.Master" %>
+﻿<%@ Page Language="C#" Async="true" Title="My Trips" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="TravelDemo.Trips.Default" MasterPageFile="~/Site.Master" %>
 
 
 <asp:Content runat="server" ContentPlaceHolderID="MainContent">
@@ -11,9 +11,9 @@
 
   <asp:GridView runat="server" ID="myGrid" AutoGenerateColumns="false" SelectMethod="myGrid_GetData" AllowSorting="true">
     <Columns>
-      <asp:HyperLinkField HeaderText="Destination" DataTextField="DestinationName" SortExpression="DestinationName" DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Trips/Details?id={0}" />
-      <asp:BoundField DataField="DepartureDateTimeUtc" HeaderText="Departure" SortExpression="DepartureDateTimeUtc" />
-      <asp:BoundField DataField="ReturnDateTimeUtc" HeaderText="Return" SortExpression="ReturnDateTimeUtc" />
+      <asp:HyperLinkField HeaderText="Destination" DataTextField="DestinationName" DataNavigateUrlFields="Id" DataNavigateUrlFormatString="~/Trips/Details?id={0}" />
+      <asp:BoundField DataField="DepartureDateTimeUtc" HeaderText="Departure" />
+      <asp:BoundField DataField="ReturnDateTimeUtc" HeaderText="Return"  />
     </Columns>
   </asp:GridView>
 

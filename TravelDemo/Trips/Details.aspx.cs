@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.ModelBinding;
 using System.Web.UI;
@@ -52,64 +54,22 @@ namespace TravelDemo.Trips
 
     }
 
-    private Models.Trip GetTripFor(string id)
+    private async Task<Models.Trip> GetTripFor(string id)
     {
 
       var tripId = Guid.Parse(id);
-      return _Context.Trips.FirstOrDefault(t => t.Id == tripId);
+      return await _Context.Trips.FirstOrDefaultAsync(t => t.Id == tripId);
 
-    }
-
-    protected void myForm_ItemInserting(object sender, FormViewInsertEventArgs e)
-    {
-
-      var newTrip = new Models.Trip
-      {
-        Id = Guid.NewGuid(),
-        DestinationName = e.Values["DestinationName"].ToString(),
-        DepartureDateTimeUtc = Convert.ToDateTime(e.Values["DepartureDateTimeUtc"].ToString()),
-        ReturnDateTimeUtc = Convert.ToDateTime(e.Values["ReturnDateTimeUtc"].ToString())
-      };
-
-      _Context.Trips.Add(newTrip);
-      _Context.SaveChanges();
-
-      Response.Redirect("~/Trips");
-
-    }
-
-    protected void myForm_ItemUpdating(object sender, FormViewUpdateEventArgs e)
-    {
-
-      var toUpdate = GetTripFor(myForm.DataKey.Value.ToString());
-
-      toUpdate.DestinationName = e.NewValues["DestinationName"].ToString();
-      toUpdate.DepartureDateTimeUtc = Convert.ToDateTime(((TextBox)myForm.FindControl("update_departuredatetimeutc")).Text);
-      toUpdate.ReturnDateTimeUtc = Convert.ToDateTime(((TextBox)myForm.FindControl("update_returndatetimeutc")).Text);
-
-      _Context.SaveChanges();
-      myForm.ChangeMode(FormViewMode.ReadOnly);
-      //BindTrip(myForm.DataKey.Value.ToString());
-
-    }
-
-    protected void myForm_ModeChanging(object sender, FormViewModeEventArgs e)
-    {
-      if (e.NewMode == FormViewMode.Edit)
-      {
-        myForm.ChangeMode(FormViewMode.Edit);
-        //BindTrip(myForm.DataKey.Value.ToString());
-      }
     }
 
     // The id parameter should match the DataKeyNames value set on the control
     // or be decorated with a value provider attribute, e.g. [QueryString]int id
-    public TravelDemo.Models.Trip myForm_GetItem([QueryString]string id)
+    public async Task<TravelDemo.Models.Trip> myForm_GetItem([QueryString]string id)
     {
-      return GetTripFor(id);
+      return await GetTripFor(id);
     }
 
-    public void myForm_InsertItem()
+    public async Task myForm_InsertItem()
     {
       var item = new TravelDemo.Models.Trip() {
         Id=Guid.NewGuid()
@@ -119,16 +79,16 @@ namespace TravelDemo.Trips
       {
         // Save changes here
         _Context.Trips.Add(item);
-        _Context.SaveChanges();
+        await _Context.SaveChangesAsync();
         Response.Redirect("~/Trips/Details?id=" + item.Id);
       }
     }
 
     // The id parameter name should match the DataKeyNames value set on the control
-    public void myForm_UpdateItem(string id)
+    public async Task myForm_UpdateItem(string id)
     {
 
-      var item = GetTripFor(id);
+      var item = await GetTripFor(id);
       // Load the item here, e.g. item = MyDataLayer.Find(id);
       if (item == null)
       {
@@ -140,7 +100,7 @@ namespace TravelDemo.Trips
       if (ModelState.IsValid)
       {
         // Save changes here, e.g. MyDataLayer.SaveChanges();
-        _Context.SaveChanges();
+        await _Context.SaveChangesAsync();
 
       }
     }

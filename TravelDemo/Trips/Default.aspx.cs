@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -19,11 +21,11 @@ namespace TravelDemo.Trips
     //     int startRowIndex
     //     out int totalRowCount
     //     string sortByExpression
-    public IQueryable<Models.Trip> myGrid_GetData()
+    public async Task<IEnumerable<Models.Trip>> myGrid_GetData()
     {
 
       var ctx = new Models.TripContext();
-      return ctx.Trips.OrderBy(t => t.DepartureDateTimeUtc);
+      return await ctx.Trips.OrderBy(t => t.DepartureDateTimeUtc).ToListAsync();
 
     }
   }
